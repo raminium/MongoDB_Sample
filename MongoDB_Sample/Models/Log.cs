@@ -13,6 +13,7 @@ namespace MongoDB_Sample.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
+        public string UserName { get; set; }
         public string APIName { get; set; } = null!;
         public string MethodName { get; set; } = null!;
         public int NoteID { get; set; }

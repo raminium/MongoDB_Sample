@@ -45,6 +45,10 @@ namespace MongoDB_Sample.Services
 
         public async Task RemoveAsync(string id) =>
             await _LogsCollection.DeleteOneAsync(x => x.Id == id);
+
+        public async Task<List<Log>> GetFromDateAsync(DateTime date) =>
+            await _LogsCollection.Find(x => x.RequestDate >= date).SortByDescending(x=>x.RT).ToListAsync();
+
     }
 }
 

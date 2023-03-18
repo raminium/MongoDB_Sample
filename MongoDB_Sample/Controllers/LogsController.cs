@@ -23,6 +23,10 @@ namespace MongoDB_Sample.Controllers
         public async Task<List<Log>> Get() =>
             await _logsService.GetAsync();
 
+        [HttpGet]
+        public async Task<List<Log>> GetTodayLogs() =>
+            await _logsService.GetFromDateAsync(DateTime.Today);
+
         [HttpGet("{id:length(24)}")]
         public async Task<ActionResult<Log>> Get(string id)
         {
@@ -51,25 +55,23 @@ namespace MongoDB_Sample.Controllers
             DateTime InsertTime;
             string strOut = "";
 
-            for (int i = 0; i < 200; i++)
-            {
-                Log newLog = new Log();
-                newLog.APIName = "Test API Log";
-                newLog.IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-                newLog.MethodName = "No Functional Method";
-                newLog.NoteID = i + 1;
-                newLog.RequestDate = DateTime.Now;
-                //System.Threading.Thread.Sleep(40);
-                newLog.ResponseDate = DateTime.Now;
-                newLog.RT = (newLog.ResponseDate - newLog.RequestDate).TotalMilliseconds;
+            Log newLog = new Log();
+            newLog.UserName = @"Tamin\R_Motamed (رامین معتمد)";
+            newLog.APIName = "Test API Log";
+            newLog.IPAddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            newLog.MethodName = "No Functional Method";
+            newLog.NoteID = 0;
+            newLog.RequestDate = DateTime.Now;
+            //System.Threading.Thread.Sleep(40);
+            newLog.ResponseDate = DateTime.Now;
+            newLog.RT = (newLog.ResponseDate - newLog.RequestDate).TotalMilliseconds;
 
-                InsertTime = DateTime.Now;
-                await _logsService.CreateAsync(newLog);
-                strOut += (DateTime.Now - InsertTime).TotalMilliseconds.ToString() + Environment.NewLine;
-            }
+            InsertTime = DateTime.Now;
+            await _logsService.CreateAsync(newLog);
+            strOut += (DateTime.Now - InsertTime).TotalMilliseconds.ToString() + Environment.NewLine;
 
-            strOut += "Totaly inserted 200 records in " + ((DateTime.Now - totTimeFrom).TotalSeconds.ToString()) + " seconds";
-            return CreatedAtAction(nameof(Get), new { CycleCount = 50 }, strOut);
+            strOut += "Totaly inserted 1 records in " + ((DateTime.Now - totTimeFrom).TotalSeconds.ToString()) + " seconds";
+            return CreatedAtAction(nameof(Get), new { CycleCount = 1 }, strOut);
         }
 
         [HttpPost]
